@@ -16,8 +16,9 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('welcome');
 });
+Route::resource('products','ProductController');
 
-Route::group(['middleware' => 'prevent-back-history'],function(){
+Route::group(['middleware' => 'prevent-back-history'],function(){//middleware for preventing back button redirecting to the logged in page 
 
 Auth::routes();
 
@@ -36,4 +37,6 @@ Route::post('/admin/password/email', 'Auth\ForgotPasswordController@sendResetLin
 Route::get('/admin/password/reset', 'Auth\ForgotPasswordController@showLinkRequestForm')->name('admin.password.request');
 Route::post('/admin/password/reset', 'Auth\ResetPasswordController@reset');
 Route::get('/admin/password/reset/{token}', 'Auth\ResetPasswordController@showResetForm')->name('admin.password.reset');
+
+
 });
