@@ -1,22 +1,38 @@
 <?php
 
 namespace App\Http\Controllers;
+use Illuminate\Support\Facades\Storage;
+use File;
 
 use App\Product;
 use Illuminate\Http\Request;
 
 class ProductController extends Controller
-{
+{   
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
+   
+    public function __construct()
+    {
+        $this->middleware('auth:admin')->except('index2','show');
+    }
+
+    public function index2()
+    {
+        $products=Product::latest()->paginate(6);
+        return view('products.index2',compact('products'))->with('i',(request()->input('page',1)-1)*5);
+    }
+
+   
     public function index()
     {
-        $products=Product::latest()->paginate(5);
+        $products=Product::latest()->paginate(6);
         return view('products.index',compact('products'))->with('i',(request()->input('page',1)-1)*5);
     }
+    
 
     /**
      * Show the form for creating a new resource.
@@ -40,11 +56,24 @@ class ProductController extends Controller
             'type' => 'required',
             'name' => 'required',
             'price' => 'required',
+            'image' => 'required',
             'description' => 'required'
 
           ]);
+          $image=$request->file('image');
+          $new_name=rand().'.'.$image->getClientOriginalExtension();
+          $image->move(public_path('images'),$new_name);
+          $form_data =array(
+              'type' => $request->type,
+              'name' =>$request->name,
+              'price' =>$request->price,
+              'image' =>$new_name,
+              'description' =>$request->description
+
+          );
   
-          Product::create($request->all());
+          Product::create($form_data);
+         
           return redirect()->route('products.index')
                           ->with('success', 'new product created successfully');
     }
@@ -83,22 +112,53 @@ class ProductController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $request->validate([
-            'type' => 'required',
-            'name' => 'required',
-            'price' => 'required',
-            'description' => 'required'
+        $product = Product::find($id);
+          $image_name=$request->hidden_image;
+          $image=$request->file('image');
+          if($image != '')
+          {
+            $request->validate([
+                'type' => 'required',
+                'name' => 'required',
+                'price' => 'required',
+                'image' => 'required',
+                'description' => 'required'
+    
+              ]);
+            
+            $image_name=rand() .'.'. $image->getClientOriginalExtension();
+            $image->move(public_path('images'),$image_name); 
+           // Storage::delete(["public/$image_name"]);
+           
+           $usersImage = public_path("images/{$product->image}"); // get previous image from folder
+           if (File::exists($usersImage)) { // unlink or remove previous image from folder
+               unlink($usersImage);
+           }
+        }
+            
 
-          ]);
-          $product = Product::find($id);
-          $product->type = $request->get('type');
-          $product->name = $request->get('name');
-          $product->price = $request->get('price');
-          $product->description = $request->get('description');
+          
+          else{
+                $request->validate([
+                    'type' => 'required',
+                    'name' => 'required',
+                    'price' => 'required',
+                    'description' => 'required'
 
+                ]);
+             }
+            $form_data=array(
+                'type' => $request->type,
+                'name' => $request->name,
+                'price' => $request->price,
+                'image' => $image_name,
+                'description' => $request->description
 
-          $product->save();
-          return redirect()->route('products.index')
+             
+                
+            );
+            Product::whereid($id)->update($form_data);
+            return redirect()->route('products.index')
                           ->with('success', 'Product updated successfully');
     }
 

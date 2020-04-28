@@ -16,6 +16,8 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('welcome');
 });
+Route::get('/', 'ProductController@index2');
+
 Route::resource('products','ProductController');
 
 Route::group(['middleware' => 'prevent-back-history'],function(){//middleware for preventing back button redirecting to the logged in page 
