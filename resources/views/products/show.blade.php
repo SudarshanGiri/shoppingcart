@@ -39,5 +39,9 @@
                 {{ $product->description }}
             </div>
         </div>
+            <div class="form-group">
+                <a class="btn-lg btn-success" href="#"> add to cart</a>
+            </div>
+       
     </div>
 @endsection

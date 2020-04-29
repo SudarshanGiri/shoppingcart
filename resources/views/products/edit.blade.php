@@ -1,5 +1,7 @@
 @extends('layouts.master')
 @section('content')
+@include('admin.navbar')
+
   <div class="container col-md-6">
     <div class="row">
       <div class="col-lg-12">

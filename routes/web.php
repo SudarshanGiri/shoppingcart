@@ -16,11 +16,49 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('welcome');
 });
-Route::get('/', 'ProductController@index2');
 
-Route::resource('products','ProductController');
+Route::get('/add-to-cart/{id}',[
+    'uses'=>'ProductController@getAddTocart',
+    'as' => 'product.addToCart'
+]);
+Route::get('/reduce/{id}',[
+    'uses' =>'ProductController@getReduceByOne',
+    'as' => 'product.reduceByOne'
+
+]);
+Route::get('/remove/{id}',[
+    'uses' =>'ProductController@getRemoveItem',
+    'as' => 'product.remove'
+
+]);
+
+Route::get('/shopping-cart',[
+    'uses'=>'ProductController@getCart',
+    'as' => 'product.shoppingCart'
+]);
+Route::get('/checkout',[
+    'uses'=>'ProductController@getCheckout',
+    'as' => 'checkout'
+]);
+Route::post('/checkout',[
+    'uses'=>'ProductController@getpostCheckout',
+    'as' => 'checkout'
+]);
+
+
+
+
+
+Route::get('/', 'ProductController@index2')->name('product.index');
+Route::get('/laptops', 'ProductController@laptops');
+Route::get('/speakers', 'ProductController@speakers');
+Route::get('/desktops', 'ProductController@desktops');
+
+
+
 
 Route::group(['middleware' => 'prevent-back-history'],function(){//middleware for preventing back button redirecting to the logged in page 
+    Route::resource('products','ProductController');
 
 Auth::routes();
 

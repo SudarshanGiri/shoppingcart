@@ -48,16 +48,15 @@
                     <h5 class="card-title">{{$product->name}} </h5>
                     <h4 style="color:red;"><p>$ {{$product->price}}</p></h4>
                     
-                    <p class="card-text" style="height: 30px;overflow:hidden;">{{$product->description}}</p>
+                    <p class="card-text">{{$product->description}}</p>
                     <a href="{{route('products.show',$product->id)}}">Details</a>
-                    <a href="{{route('product.addToCart',['id'=>$product->id])}}"  style="font-size:10px;" ><i class="fas fa-cart-plus" style="font-size:20px;"></i> ADD TO CART</a>
+                    <a href="{{route('product.addToCart',['id'=>$product->id])}}" class="btn  btn-success float-right" style="font-size:10px;" ><i class="fas fa-cart-plus" style="font-size:20px;"></i> ADD TO CART</a>
 
                     </div>
                 </div>
                    
                 @endforeach
         </div>
-      <div>{{$products->links()}}</div>
 
   </div>
 @endsection
