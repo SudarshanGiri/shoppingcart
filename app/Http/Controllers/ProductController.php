@@ -18,10 +18,10 @@ class ProductController extends Controller
      * @return \Illuminate\Http\Response
      */
    
-    /** public function __construct()
-   
-    //    $this->middleware('auth:admin')->except('index2','show','laptops','speakers','desktops','getAddToCart');
-    }*/
+    public function __construct()
+    {
+        $this->middleware('auth:admin')->only('index','edit','create','store','update');
+    }
     public function getAddToCart(Request $request, $id){
         $product=Product::find($id);
         $oldCart=Session::has('cart') ? Session::get('cart'):null;
@@ -38,6 +38,16 @@ class ProductController extends Controller
         $cart->reduceByOne($id);
 
         SESSION::put('cart',$cart);
+        return redirect()->route('product.shoppingCart');
+
+    }
+    public function getIncreaseByOne(Request $request, $id){
+        $product=Product::find($id);
+        $oldCart=Session::has('cart') ? Session::get('cart'):null;
+        $cart =new Cart($oldCart);
+        $cart->add($product,$product->id);
+
+        $request->session()->put('cart',$cart);
         return redirect()->route('product.shoppingCart');
 
     }

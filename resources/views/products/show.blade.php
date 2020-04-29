@@ -1,4 +1,6 @@
 @extends('layouts.master')
+@include('layouts.navbar')
+
 @section('content')
     <div class="row">
         <div class="col-lg-12 margin-tb">
@@ -40,7 +42,7 @@
             </div>
         </div>
             <div class="form-group">
-                <a class="btn-lg btn-success" href="#"> add to cart</a>
+                <a class="btn-lg btn-success" href="{{route('product.addToCart',['id'=>$product->id])}}"> add to cart</a>
             </div>
        
     </div>

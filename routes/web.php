@@ -16,6 +16,7 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('welcome');
 });
+    
 
 Route::get('/add-to-cart/{id}',[
     'uses'=>'ProductController@getAddTocart',
@@ -24,6 +25,11 @@ Route::get('/add-to-cart/{id}',[
 Route::get('/reduce/{id}',[
     'uses' =>'ProductController@getReduceByOne',
     'as' => 'product.reduceByOne'
+
+]);
+Route::get('/increase/{id}',[
+    'uses' =>'ProductController@getIncreaseByOne',
+    'as' => 'product.increaseByOne'
 
 ]);
 Route::get('/remove/{id}',[

@@ -2,53 +2,40 @@
 @include('layouts.navbar')
 
 @section('content')
-    <h2>Shopping Cart</h2>
+<div class="container">
+    <p><h2>My Cart</h2></p>  
     @if(Session::has('cart'))
-        <div class="row">
-                <div class="col-md-6">
-                   <ul class="list-group">
+
+                <div class="container">
                         @foreach($products as $product)
-                            <li class="list-group-item">
-                                <span class="badge">{{$product['qty']}}</span>
+                            <div class="cartlist list-group-item">
+                                <span class="quantity" style="background-color:#262626;color:white;padding:10px;font-weight:bolder;font-size:20px;">{{$product['qty']}}</span>
+                                <span style="color:red;">${{$product['price']}} </span>
+                                <span class="image"style="width:200px;"><img  height="100px" src="{{URL::to('/')}}/images/{{$product['item']['image']}}" alt="Card image cap"></span>
 
-                                <strong>{{$product['item']['name']}}</strong>
-                                <span class="btn-sm btn-success">${{$product['price']}}</span>
-                                <div class="btn-group">
-                                    <button type="button" class="btn btn-primary  dropdown-toggle" data-toggle="dropdown">
-                                        Action <span class="caret"></span></button>
-                                        <ul class="dropdown-menu">
-                                        <li><a href="{{route('product.reduceByOne',['id'=>$product['item']['id']]) }}">Reduce by 1</a></li>
-                                        <li><a href="{{route('product.remove',['id'=>$product['item']['id']]) }}">Reduce ALL</a></li>
-
-
-                                           
-
-
-                                            
-                                        </ul>
-                                    
-                                </div>   
-                            </li>
+                                <span></span><strong>{{$product['item']['name']}}</strong></span>
+                                <span ><a href="{{route('product.reduceByOne',['id'=>$product['item']['id']]) }}"><i class="fas fa-minus"></i></a></span>
+                                <span><a href="{{route('product.increaseByOne',['id'=>$product['item']['id']])}}"><i class="fas fa-plus"></i></a></span>
+                                <span> <a href="{{route('product.remove',['id'=>$product['item']['id']]) }}">DELETE</a></span>
+                            </div>
                         @endforeach
-                    </ul>  
                 </div>
-        </div>
-        <div class="row">
-                <div class="col-md-6">
-                    <strong>Total: $ {{$totalPrice}}</strong>
+                <div class="row">
+                        <div class="col-md-6">
+                            <h3 style="color:red;">Total: $ {{$totalPrice}}</h3>
 
 
+                        </div>
+                        
                 </div>
-                   
-         </div>
-         <hr>
-         <div class="row">
-                <div class="col-md-6">
-                <a href="{{route('checkout')}}" type="button" class="btn btn-success">Checkout</a>
+                <hr>
+            <div class="row">
+                    <div class="col-md-6">
+                    <a href="{{route('checkout')}}" type="button" class="btn btn-success">Checkout</a>
 
-                </div>
-                   
-         </div>
+                    </div>
+                    
+            </div>
 
 
     @else
@@ -62,5 +49,5 @@
 
     @endif
 
-
+</div>
 @endsection

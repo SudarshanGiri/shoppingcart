@@ -28,8 +28,10 @@
       }
       footer{
         text-align: center;
-        background-color: #ddd8;
+        background-color: #ddd;
+        color: #aaa;
         padding: 20px;
+        font-size: 25px;
         position: static;
         width: 100%;
         left:0;
